@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base Converter</title>
+    <style>
+        body{
+            border: 15px solid black;
+        }
+        h1{
+            text-align: center;
+            margin: 0px;
+            color: rgb(140, 71, 183);
+            font-weight: bold;
+            background-color: rgb(66, 30, 88);
+            padding-top: 20px;
+            font-size: 50px;
+            height: 100px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+        #no{
+            padding-top: 20px;
+            font-size: 30px;
+            text-align: center;
+            background-color: rgb(148, 96, 181);
+            font-weight: bold;
+        }
+        #num{
+            font-size: 30px;
+        }
+        #base{
+            text-align: center;
+            font-size: 30px;
+            background-color: rgb(148, 96, 181);
+            padding-bottom: 50px;
+            font-weight: bold;
+        }
+        .select{
+            font-size: 25px;
+            font-style: italic;
+            cursor: pointer;
+        }
+        #con{
+            text-align: center;
+            background-color: rgb(66, 30, 88);
+            padding: 30px;
+            height: 50px;
+        }
+        #convert{
+            height: 50px;
+            width: 100px;
+            background-color: rgb(177, 88, 144);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        #reset{
+            height: 50px;
+            width: 100px;
+            background-color: rgb(177, 88, 144);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        #re{
+            text-align: center;
+            background-color: aquamarine;
+            font-size: 30px;
+            height: 50px;
+            padding: 20px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Base Converter</h1>
+    <div>
+        <div id="no">
+            <label>Enter Number</label><br>
+            <input type="string" placeholder="0" id="num">
+        </div>
+
+        <div id="base">
+            <br>
+            <label>From Base</label><br>
+            <!-- <input type="number" placeholder="0"> -->
+            <select name="" id="from" class="select">
+                <option value="">From</option>
+                <option value="2">Binary</option>
+                <option value="8">Octal</option>
+                <option value="10">Decimal</option>
+                <option value="16">Hexadecimal</option>
+            </select><br><br>
+            <label>To Base</label><br>
+            <!-- <input type="number" placeholder="0"> -->
+            <select name="" id="to" class="select">
+                <option value="">To</option>
+                <option value="2">Binary</option>
+                <option value="8">Octal</option>
+                <option value="10">Decimal</option>
+                <option value="16">Hexadecimal</option>
+            </select>
+        </div>
+
+        <div id="con">
+            <button id="convert" onclick="cal()">=Convert </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="reset" onclick="location.reload()">Reset</button>
+        </div>
+
+        <div id="re">
+            <label>Result =</label>
+            <label id="txt">......</label>
+        </div>
+    </div>
+
+
+    <script>
+        let n=document.getElementById("num");
+        let num,fr,t,dec=0,base=1,a=0;
+
+        n.addEventListener('input',function(){
+            num=n.value;
+        })
+
+        let from=document.getElementById("from");
+        from.addEventListener('input',function(){
+            fr=from.value;
+        })
+
+        let to=document.getElementById("to");
+        to.addEventListener('input',function(){
+            t=to.value;
+        })
+
+        let text=document.getElementById("txt");
+        
+        
+        function cal(){
+            check();
+        }
+
+        function check(){
+
+            if(fr==2 || fr==8 ){
+            let d=sep();
+            ans(d);
+        }
+        else if(fr==10){
+            ans(num);
+        }
+        else if(fr==16){
+            for(let i=num.length-1;i>=0;i--){
+                if(num[i]>='A' && num[i]<='F'){
+                    s=(num.charCodeAt(i)-55);
+                }
+                else{
+                    s=(parseInt(num[i]));
+                }
+                dec=dec+s*base;
+                base=base*fr;
+            }
+            ans(dec);
+        }
+        }
+
+        function sep(){
+            while(num>0){
+                let rem=num%10;
+                num=parseInt(num/10); 
+                dec=dec+rem*base;
+                base=base*fr;
+            }
+            return dec;
+        }
+
+        function ans(deci){
+            let j=0,a=0;
+            let ar=[];
+            let answer='';
+            if(t==2 || t==8 || t==10){
+                let i=1;
+                while(deci>0){
+                let rem=deci%t;
+                deci=parseInt(deci/t);
+                a=a+(rem*i);
+                i=i*10;
+            }
+            text.textContent=a;
+            }else if(t==16){
+                let rem;
+                while(deci>0){
+                rem=deci%t;
+                if(rem<10){
+                    rem = rem+48;
+                }
+                else{
+                    rem = rem+55;
+                }
+                ar[j]=rem;
+                j++;
+                deci=parseInt(deci/t);
+                
+            }
+            for(j=j-1;j>=0;j--){
+                answer=answer+String.fromCharCode(ar[j]);
+            }
+            text.textContent=answer;
+            }
+        }
+
+    </script>
+</body>
+</html>
